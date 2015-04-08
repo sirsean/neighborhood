@@ -11,6 +11,16 @@ button {
   cursor: pointer;
 }
 
+/* This is needed for Safari to click buttons with SVG icons. */
+svg {
+  pointer-events: none;
+}
+
+.icon {
+  width: 48px;
+  height: 48px;
+}
+
 .full-height {
   height: 100vh;
 }
@@ -58,11 +68,25 @@ button {
   justify-content: center;
 }
 
+.justify-end {
+  -webkit-justify-content: flex-end;
+  -moz-justify-content: flex-end;
+  -ms-justify-content: flex-end;
+  justify-content: flex-end;
+}
+
 .align-center {
   -webkit-align-items: center;
   -moz-align-items: center;
   -ms-align-items: center;
   align-items: center;
+}
+
+.align-end {
+  -webkit-align-items: flex-end;
+  -moz-align-items: flex-end;
+  -ms-align-items: flex-end;
+  align-items: flex-end;
 }
 
 .grow {

@@ -33,7 +33,7 @@ module.exports = {
   }
 };
 
-},{"../dispatcher/Dispatcher.js":10}],2:[function(require,module,exports){
+},{"../dispatcher/Dispatcher.js":11}],2:[function(require,module,exports){
 var Main = require("./components/Main.js");
 
 React.render(
@@ -41,7 +41,56 @@ React.render(
   document.body
 );
 
-},{"./components/Main.js":7}],3:[function(require,module,exports){
+},{"./components/Main.js":8}],3:[function(require,module,exports){
+/*
+ * This renders an SVG icon from the open-iconic iconset.
+ *
+ * Specify which icon with the "icon" parameter.
+ *
+ * You can set an outer class on the <svg> element with "outerClassName", and
+ * an inner class on the <use> element with "innerClassName".
+ *
+ * You'll set the size with the outer class, and the color with the inner class (using the
+ * "fill" CSS style).
+ *
+ *  <Icon icon="map-marker" />
+ *  <Icon icon="map-marker" outerClassName="big" />
+ *  <Icon icon="map-marker" outerClassName="big" innerClassName="selected" />
+ *
+ * Note that this has to use "dangerouslySetInnerHTML" because the <use> element isn't
+ * on React's whitelist of HTML elements.
+ */
+var Icon = React.createClass({displayName: 'Icon',
+  /*
+   * This is necessary because we're using dangerouslySetInnerHTML, which won't see className
+   * changes. So we need to manually update the class, when it changes.
+   */
+  componentDidUpdate: function(oldProps) {
+    var oldInner = inner(oldProps.innerClassName);
+    var newInner = inner(this.props.innerClassName);
+    if (oldInner != newInner) {
+      var svg = this.getDOMNode();
+      var use = svg.firstChild;
+      use.setAttribute("class", newInner);
+    }
+  },
+  render: function() {
+    var icon = this.props.icon;
+    var outerClassName = "icon " + (this.props.outerClassName || "");
+    var innerClassName = inner(this.props.innerClassName);
+    return (
+      React.createElement("svg", {viewBox: "0 0 8 8", className: outerClassName, dangerouslySetInnerHTML: {__html: '<use xlink:href="/open-iconic.svg#' + icon + '" class="' + innerClassName + '"></use>'}})
+    );
+  }
+});
+
+function inner(prop) {
+  return "inner " + (prop || "");
+}
+
+module.exports = Icon;
+
+},{}],4:[function(require,module,exports){
 module.exports = React.createClass({displayName: 'exports',
   render: function() {
     return (
@@ -50,7 +99,7 @@ module.exports = React.createClass({displayName: 'exports',
   }
 });
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 module.exports = React.createClass({displayName: 'exports',
   render: function() {
     return (
@@ -61,7 +110,7 @@ module.exports = React.createClass({displayName: 'exports',
   }
 });
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 module.exports = React.createClass({displayName: 'exports',
   render: function() {
     return (
@@ -70,7 +119,7 @@ module.exports = React.createClass({displayName: 'exports',
   }
 });
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 module.exports = React.createClass({displayName: 'exports',
   render: function() {
     return (
@@ -79,7 +128,7 @@ module.exports = React.createClass({displayName: 'exports',
   }
 });
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 var Actions = require("../actions/Actions.js");
 var LocationStore = require("../stores/LocationStore.js");
 var NeighborhoodStore = require("../stores/NeighborhoodStore.js");
@@ -132,13 +181,17 @@ module.exports = React.createClass({displayName: 'exports',
   }
 });
 
-},{"../actions/Actions.js":1,"../stores/LocationStore.js":11,"../stores/NeighborhoodStore.js":12,"./LoadingLocation.js":3,"./LoadingNeighborhood.js":4,"./LocationFailed.js":5,"./LocationUnavailable.js":6,"./Neighborhood.js":8}],8:[function(require,module,exports){
+},{"../actions/Actions.js":1,"../stores/LocationStore.js":12,"../stores/NeighborhoodStore.js":13,"./LoadingLocation.js":4,"./LoadingNeighborhood.js":5,"./LocationFailed.js":6,"./LocationUnavailable.js":7,"./Neighborhood.js":9}],9:[function(require,module,exports){
+var Actions = require("../actions/Actions.js");
 var NoNeighborhoodFound = require("./NoNeighborhoodFound.js");
+var Icon = require("./Icon.js");
 
 module.exports = React.createClass({displayName: 'exports',
+  refresh: function() {
+    Actions.loadLocation();
+  },
   render: function() {
     var neighborhood = this.props.neighborhood;
-    console.log("neighborhood", neighborhood);
 
     var content = null;
     if (!neighborhood) {
@@ -146,8 +199,11 @@ module.exports = React.createClass({displayName: 'exports',
     } else {
       content = (
         React.createElement("div", {className: "full-height flex column nowrap justify-center align-center margin-medium text-center"}, 
-          React.createElement("div", null, "You are in"), 
-          React.createElement("div", {className: "neighborhood-name"}, neighborhood.Name)
+          React.createElement("div", {className: "flex grow align-end"}, "You are in"), 
+          React.createElement("div", {className: "neighborhood-name"}, neighborhood.Name), 
+          React.createElement("div", {className: "flex grow align-center"}, 
+            React.createElement("button", {onClick: this.refresh}, React.createElement(Icon, {icon: "reload"}))
+          )
         )
       );
     }
@@ -155,7 +211,7 @@ module.exports = React.createClass({displayName: 'exports',
   }
 });
 
-},{"./NoNeighborhoodFound.js":9}],9:[function(require,module,exports){
+},{"../actions/Actions.js":1,"./Icon.js":3,"./NoNeighborhoodFound.js":10}],10:[function(require,module,exports){
 module.exports = React.createClass({displayName: 'exports',
   render: function() {
     return (
@@ -166,7 +222,7 @@ module.exports = React.createClass({displayName: 'exports',
   }
 });
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 /*
  * Copyright (c) 2014, Facebook, Inc.
  * All rights reserved.
@@ -389,7 +445,7 @@ var singleDispatcher = new Dispatcher();
 
 module.exports = singleDispatcher;
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 var Store = require("./Store.js");
 var Actions = require("../actions/Actions.js");
 var Dispatcher = require("../dispatcher/Dispatcher.js");
@@ -452,7 +508,7 @@ module.exports = new Store({
   }
 });
 
-},{"../actions/Actions.js":1,"../dispatcher/Dispatcher.js":10,"./Store.js":13}],12:[function(require,module,exports){
+},{"../actions/Actions.js":1,"../dispatcher/Dispatcher.js":11,"./Store.js":14}],13:[function(require,module,exports){
 var Store = require("./Store.js");
 var Actions = require("../actions/Actions.js");
 var Dispatcher = require("../dispatcher/Dispatcher.js");
@@ -502,7 +558,7 @@ module.exports = new Store({
   }
 });
 
-},{"../actions/Actions.js":1,"../dispatcher/Dispatcher.js":10,"./Store.js":13}],13:[function(require,module,exports){
+},{"../actions/Actions.js":1,"../dispatcher/Dispatcher.js":11,"./Store.js":14}],14:[function(require,module,exports){
 var Dispatcher = require("../dispatcher/Dispatcher.js");
 
 /*
@@ -594,4 +650,4 @@ Store.prototype.removeChangeListener = function(listener) {
 
 module.exports = Store;
 
-},{"../dispatcher/Dispatcher.js":10}]},{},[2]);
+},{"../dispatcher/Dispatcher.js":11}]},{},[2]);
