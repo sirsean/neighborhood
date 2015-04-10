@@ -29,5 +29,11 @@ func main() {
 var indexTemplate = template.Must(template.ParseFiles(fmt.Sprintf("%s/template/index.html", config.Get().Host.Path)))
 
 func index(w http.ResponseWriter, r *http.Request) {
-	indexTemplate.Execute(w, nil)
+	type Data struct {
+		MapsApiKey string
+	}
+	data := Data{
+		MapsApiKey: config.Get().Maps.ApiKey,
+	}
+	indexTemplate.Execute(w, data)
 }

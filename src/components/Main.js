@@ -14,6 +14,8 @@ module.exports = React.createClass({
       hasLocation: LocationStore.state.hasLocation(),
       locationUnavailable: LocationStore.state.locationUnavailable(),
       locationFailed: LocationStore.state.locationFailed(),
+      latitude: LocationStore.state.latitude(),
+      longitude: LocationStore.state.longitude(),
       loadingNeighborhood: NeighborhoodStore.state.loading(),
       hasNeighborhood: NeighborhoodStore.state.hasNeighborhood(),
       neighborhood: NeighborhoodStore.state.neighborhood()
@@ -44,7 +46,13 @@ module.exports = React.createClass({
     } else if (this.state.loadingNeighborhood) {
       content = <LoadingNeighborhood />;
     } else if (this.state.hasNeighborhood) {
-      content = <Neighborhood neighborhood={this.state.neighborhood} />;
+      content = (
+        <Neighborhood
+          neighborhood={this.state.neighborhood}
+          latitude={this.state.latitude}
+          longitude={this.state.longitude}
+          />
+      );
     }
     return content;
   }

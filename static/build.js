@@ -145,6 +145,8 @@ module.exports = React.createClass({displayName: 'exports',
       hasLocation: LocationStore.state.hasLocation(),
       locationUnavailable: LocationStore.state.locationUnavailable(),
       locationFailed: LocationStore.state.locationFailed(),
+      latitude: LocationStore.state.latitude(),
+      longitude: LocationStore.state.longitude(),
       loadingNeighborhood: NeighborhoodStore.state.loading(),
       hasNeighborhood: NeighborhoodStore.state.hasNeighborhood(),
       neighborhood: NeighborhoodStore.state.neighborhood()
@@ -175,7 +177,13 @@ module.exports = React.createClass({displayName: 'exports',
     } else if (this.state.loadingNeighborhood) {
       content = React.createElement(LoadingNeighborhood, null);
     } else if (this.state.hasNeighborhood) {
-      content = React.createElement(Neighborhood, {neighborhood: this.state.neighborhood});
+      content = (
+        React.createElement(Neighborhood, {
+          neighborhood: this.state.neighborhood, 
+          latitude: this.state.latitude, 
+          longitude: this.state.longitude}
+          )
+      );
     }
     return content;
   }
@@ -190,6 +198,23 @@ module.exports = React.createClass({displayName: 'exports',
   refresh: function() {
     Actions.loadLocation();
   },
+  componentDidMount: function() {
+    this.makeMap();
+  },
+  componentDidUpdate: function(oldProps) {
+    if ((oldProps.latitude != this.props.latitude) || (oldProps.longitude != this.props.longitude)) {
+      this.makeMap();
+    }
+  },
+  makeMap: function() {
+    new google.maps.Map(document.getElementById("map"), {
+      center: { lat: this.props.latitude, lng: this.props.longitude },
+      zoom: 14,
+      disableDefaultUI: true,
+      mapTypeControl: false,
+      zoomControl: false
+    });
+  },
   render: function() {
     var neighborhood = this.props.neighborhood;
 
@@ -198,11 +223,15 @@ module.exports = React.createClass({displayName: 'exports',
       content = React.createElement(NoNeighborhoodFound, null);
     } else {
       content = (
-        React.createElement("div", {className: "full-height flex column nowrap justify-center align-center margin-medium text-center"}, 
-          React.createElement("div", {className: "flex grow align-end"}, "You are in"), 
-          React.createElement("div", {className: "neighborhood-name"}, neighborhood.Name), 
-          React.createElement("div", {className: "flex grow align-center"}, 
-            React.createElement("button", {onClick: this.refresh}, React.createElement(Icon, {icon: "reload"}))
+        React.createElement("div", null, 
+          React.createElement("div", {id: "map", className: "neighborhood-map"}), 
+          React.createElement("div", {className: "map-blocker"}), 
+          React.createElement("div", {className: "full-height flex column nowrap justify-center align-center margin-medium text-center"}, 
+            React.createElement("div", {className: "flex grow align-end front"}, "You are in"), 
+            React.createElement("div", {className: "neighborhood-name front"}, neighborhood.Name), 
+            React.createElement("div", {className: "flex grow align-center front"}, 
+              React.createElement("button", {onClick: this.refresh}, React.createElement(Icon, {icon: "reload"}))
+            )
           )
         )
       );

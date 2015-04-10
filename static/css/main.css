@@ -30,6 +30,29 @@ svg {
   font-size: 28pt;
 }
 
+.neighborhood-map {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+
+.map-blocker {
+  background: rgba(255, 255, 255, 0.6);
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.front {
+  z-index: 100;
+}
+
 .flex {
   display: -ms-flexbox;
   display: -webkit-flex;

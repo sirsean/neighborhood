@@ -7,6 +7,9 @@ import (
 )
 
 type Config struct {
+	Maps struct {
+		ApiKey string
+	}
 	Host struct {
 		Port string
 		Path string
