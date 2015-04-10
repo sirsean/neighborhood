@@ -15,13 +15,29 @@ module.exports = React.createClass({
     }
   },
   makeMap: function() {
-    new google.maps.Map(document.getElementById("map"), {
+    var MAP_TYPE_ID = "custom_style";
+    var map = new google.maps.Map(document.getElementById("map"), {
       center: { lat: this.props.latitude, lng: this.props.longitude },
       zoom: 14,
       disableDefaultUI: true,
-      mapTypeControl: false,
-      zoomControl: false
+      mapTypeId: MAP_TYPE_ID
     });
+    var customMapType = new google.maps.StyledMapType([
+      {
+        stylers: [
+          { saturation: -100 },
+          { visibility: "simplified" },
+          { gamma: 0.9 }
+        ]
+      },
+      {
+        elementType: "labels",
+        stylers: [
+          { visibility: "off" }
+        ]
+      }
+    ], {});
+    map.mapTypes.set(MAP_TYPE_ID, customMapType);
   },
   render: function() {
     var neighborhood = this.props.neighborhood;
