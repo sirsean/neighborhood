@@ -51,9 +51,9 @@ module.exports = React.createClass({
           <div id="map" className="neighborhood-map"></div>
           <div className="map-blocker"></div>
           <div className="full-height flex column nowrap justify-center align-center margin-medium text-center">
-            <div className="flex grow align-end front">You are in</div>
+            <div className="flex grow align-end front">you are in</div>
             <div className="neighborhood-name front">{neighborhood.Name}</div>
-            <div className="flex grow align-center front">
+            <div className="flex grow3 align-center front">
               <button onClick={this.refresh}><Icon icon="reload" /></button>
             </div>
           </div>

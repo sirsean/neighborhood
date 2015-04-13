@@ -119,12 +119,23 @@ svg {
   flex-grow: 1;
 }
 
+.grow3 {
+  -webkit-flex-grow: 3;
+  -moz-flex-grow: 3;
+  -ms-flex-grow: 3;
+  flex-grow: 3;
+}
+
 .text-center {
   text-align: center;
 }
 
 .margin-medium {
   margin: 10px;
+}
+
+.margin-xlarge {
+  margin: 60px;
 }
 
 .padding-medium {

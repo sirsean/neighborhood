@@ -243,9 +243,9 @@ module.exports = React.createClass({displayName: 'exports',
           React.createElement("div", {id: "map", className: "neighborhood-map"}), 
           React.createElement("div", {className: "map-blocker"}), 
           React.createElement("div", {className: "full-height flex column nowrap justify-center align-center margin-medium text-center"}, 
-            React.createElement("div", {className: "flex grow align-end front"}, "You are in"), 
+            React.createElement("div", {className: "flex grow align-end front"}, "you are in"), 
             React.createElement("div", {className: "neighborhood-name front"}, neighborhood.Name), 
-            React.createElement("div", {className: "flex grow align-center front"}, 
+            React.createElement("div", {className: "flex grow3 align-center front"}, 
               React.createElement("button", {onClick: this.refresh}, React.createElement(Icon, {icon: "reload"}))
             )
           )
