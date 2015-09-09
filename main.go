@@ -1,14 +1,15 @@
 package main
 
 import (
-	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/sirsean/neighborhood/api"
-	"github.com/sirsean/neighborhood/config"
 	"html/template"
 	"log"
 	"net/http"
+	"os"
 )
+
+var googleMapsApiKey string = os.Getenv("GOOGLE_MAPS_API_KEY")
 
 func main() {
 	log.Printf("starting up")
@@ -18,22 +19,20 @@ func main() {
 
 	router.HandleFunc("/api/where", api.Where).Methods("GET")
 
-	router.PathPrefix("/").Handler(http.FileServer(http.Dir(fmt.Sprintf("%s/static/", config.Get().Host.Path))))
+	router.PathPrefix("/").Handler(http.FileServer(http.Dir("/src/github.com/sirsean/neighborhood/static/")))
 	http.Handle("/", router)
 
-	port := config.Get().Host.Port
-	log.Printf("Serving on port %v", port)
-	log.Fatal(http.ListenAndServe(port, nil))
+	log.Fatal(http.ListenAndServe(":80", nil))
 }
 
-var indexTemplate = template.Must(template.ParseFiles(fmt.Sprintf("%s/template/index.html", config.Get().Host.Path)))
+var indexTemplate = template.Must(template.ParseFiles("/src/github.com/sirsean/neighborhood/template/index.html"))
 
 func index(w http.ResponseWriter, r *http.Request) {
 	type Data struct {
 		MapsApiKey string
 	}
 	data := Data{
-		MapsApiKey: config.Get().Maps.ApiKey,
+		MapsApiKey: googleMapsApiKey,
 	}
 	indexTemplate.Execute(w, data)
 }

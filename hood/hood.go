@@ -2,7 +2,6 @@ package hood
 
 import (
 	"errors"
-	"github.com/sirsean/neighborhood/config"
 	"github.com/sirsean/neighborhood/parse"
 	"log"
 	"math"
@@ -55,7 +54,7 @@ func angle2d(y1, x1, y2, x2 float64) float64 {
 }
 
 func init() {
-	kml, err := parse.LoadKml(config.Get().Host.Kml)
+	kml, err := parse.LoadKml("/src/github.com/sirsean/neighborhood/xml/chicago.kml")
 	if err != nil {
 		log.Fatal("Failed to load KML: ", err)
 	}
