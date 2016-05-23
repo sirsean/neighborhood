@@ -22,7 +22,19 @@ func main() {
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("/src/github.com/sirsean/neighborhood/static/")))
 	http.Handle("/", router)
 
-	log.Fatal(http.ListenAndServe(":80", nil))
+	go func() {
+		insecure := http.Server{
+			Addr: ":80",
+		}
+		log.Fatal(insecure.ListenAndServe())
+	}()
+
+	server := http.Server{
+		Addr: ":443",
+	}
+	log.Fatal(server.ListenAndServeTLS(
+		"/src/github.com/sirsean/neighborhood/certs/server.pem",
+		"/src/github.com/sirsean/neighborhood/certs/server.key"))
 }
 
 var indexTemplate = template.Must(template.ParseFiles("/src/github.com/sirsean/neighborhood/template/index.html"))

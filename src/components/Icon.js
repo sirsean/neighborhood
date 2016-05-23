@@ -16,6 +16,8 @@
  * Note that this has to use "dangerouslySetInnerHTML" because the <use> element isn't
  * on React's whitelist of HTML elements.
  */
+import React from "react";
+
 var Icon = React.createClass({
   /*
    * This is necessary because we're using dangerouslySetInnerHTML, which won't see className

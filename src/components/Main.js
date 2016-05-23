@@ -1,3 +1,4 @@
+import React from "react";
 var Actions = require("../actions/Actions.js");
 var LocationStore = require("../stores/LocationStore.js");
 var NeighborhoodStore = require("../stores/NeighborhoodStore.js");

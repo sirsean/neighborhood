@@ -1,6 +1,8 @@
+import React from "react";
+import ReactDOM from "react-dom";
 var Main = require("./components/Main.js");
 
-React.render(
+ReactDOM.render(
   <Main />,
-  document.body
+  document.getElementById("app")
 );

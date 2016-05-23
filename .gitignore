@@ -1,3 +1,8 @@
 neighborhood
 neighborhood.linux
 build/*
+.DN_STORE
+static/build.js
+static/build.min.js
+static/build.js.map
+node_modules

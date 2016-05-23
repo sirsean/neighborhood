@@ -1,3 +1,4 @@
+import React from "react";
 var Actions = require("../actions/Actions.js");
 var NoNeighborhoodFound = require("./NoNeighborhoodFound.js");
 var Icon = require("./Icon.js");
