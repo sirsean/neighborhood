@@ -17,6 +17,7 @@
  * on React's whitelist of HTML elements.
  */
 import React from "react";
+import ReactDOM from "react-dom";
 
 var Icon = React.createClass({
   /*
@@ -27,7 +28,7 @@ var Icon = React.createClass({
     var oldInner = inner(oldProps.innerClassName);
     var newInner = inner(this.props.innerClassName);
     if (oldInner != newInner) {
-      var svg = this.getDOMNode();
+      var svg = ReactDOM.findDOMNode(this);
       var use = svg.firstChild;
       use.setAttribute("class", newInner);
     }
