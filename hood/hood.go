@@ -5,6 +5,7 @@ import (
 	"github.com/sirsean/neighborhood/parse"
 	"log"
 	"math"
+	"os"
 	"strconv"
 	"strings"
 )
@@ -16,7 +17,7 @@ type Coordinate struct {
 
 type Neighborhood struct {
 	Name   string
-	Points []Coordinate
+	Points []Coordinate `json:"-"`
 }
 
 var all []Neighborhood
@@ -53,10 +54,11 @@ func angle2d(y1, x1, y2, x2 float64) float64 {
 	return dtheta
 }
 
-func init() {
-	kml, err := parse.LoadKml("/src/github.com/sirsean/neighborhood/xml/chicago.kml")
+func LoadFile(filename string) error {
+	kml, err := parse.LoadKml(filename)
 	if err != nil {
 		log.Fatal("Failed to load KML: ", err)
+		return err
 	}
 	all = make([]Neighborhood, len(kml.Placemarks))
 	for i, placemark := range kml.Placemarks {
@@ -76,5 +78,12 @@ func init() {
 			Points: coordinates,
 		}
 	}
-	log.Printf("%v", all)
+	return nil
+}
+
+func init() {
+	if os.Getenv("KML_FILE") != "" {
+		LoadFile(os.Getenv("KML_FILE"))
+	}
+	log.Println("Neighborhoods:", len(all))
 }

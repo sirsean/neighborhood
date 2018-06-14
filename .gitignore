@@ -6,3 +6,5 @@ static/build.js
 static/build.min.js
 static/build.js.map
 node_modules
+dist
+frontend/dist
